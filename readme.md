@@ -1,51 +1,27 @@
-# load-grunt-tasks [![Build Status](https://secure.travis-ci.org/sindresorhus/load-grunt-tasks.png?branch=master)](http://travis-ci.org/sindresorhus/load-grunt-tasks)
+# load-grunt-subtasks
 
-> Load multiple grunt tasks using globbing patterns
+> Load multiple grunt tasks from subprojects using globbing patterns
 
-Usually you would have to load each task one by one, which is unnecessarily cumbersome.
-
-This module will read the `dependencies`/`devDependencies`/`peerDependencies` in your package.json and load grunt tasks that matches the provided patterns.
-
-**Note the new argument signature as of 0.2.0.**
-
-
-#### Before
-
-```js
-grunt.loadNpmTasks('grunt-shell');
-grunt.loadNpmTasks('grunt-sass');
-grunt.loadNpmTasks('grunt-recess');
-grunt.loadNpmTasks('grunt-sizediff');
-grunt.loadNpmTasks('grunt-svgmin');
-grunt.loadNpmTasks('grunt-styl');
-grunt.loadNpmTasks('grunt-php');
-grunt.loadNpmTasks('grunt-eslint');
-grunt.loadNpmTasks('grunt-concurrent');
-grunt.loadNpmTasks('grunt-bower-requirejs');
-```
-
-#### After
-
-```js
-require('load-grunt-tasks')(grunt);
-```
-
+Based on the wonderful [load-grunt-tasks](https://github.com/sindresorhus/load-grunt-tasks) by [Sindre Sorhus](http://sindresorhus.com), but rather than loading all of the grunt tasks from the current module, it allows you to load other grunt tasks from inside of `node_modules`.
 
 ## Install
 
-Install with [npm](https://npmjs.org/package/load-grunt-tasks): `npm install --save-dev load-grunt-tasks`
+Install with [npm](https://npmjs.org/package/load-grunt-subtasks): `npm install --save-dev load-grunt-subtasks`
 
 
 ## Example config
 
+By default, it will load all of the `grunt-*` tasks within `node_modules/*/node_modules`
+
 ```js
 // Gruntfile.js
-module.exports = function (grunt) {
-	// load all grunt tasks matching the `grunt-*` pattern
-	require('load-grunt-tasks')(grunt);
 
-	grunt.initConfig({});
-	grunt.registerTask('default', []);
+module.exports = function (grunt) {
+  // load all grunt-* tasks from within the `shared` module
+  require('load-grunt-subtasks')(grunt);
+
+  grunt.initConfig({});
+  grunt.registerTask('default', []);
 }
 ```
 
@@ -55,25 +31,31 @@ module.exports = function (grunt) {
 ### Load all grunt tasks
 
 ```js
-require('load-grunt-tasks')(grunt);
+require('load-grunt-subtasks')(grunt);
 ```
 
 Equivalent to:
 
 ```js
-require('load-grunt-tasks')(grunt, {pattern: 'grunt-*'});
+require('load-grunt-subtasks')(grunt, {
+  pattern: 'grunt-*'
+});
 ```
 
 ### Load all grunt-contrib tasks
 
 ```js
-require('load-grunt-tasks')(grunt, {pattern: 'grunt-contrib-*'});
+require('load-grunt-subtasks')(grunt, {
+  pattern: 'grunt-contrib-*'
+});
 ```
 
 ### Load all grunt-contrib tasks and another non-contrib task
 
 ```js
-require('load-grunt-tasks')(grunt, {pattern: ['grunt-contrib-*', 'grunt-shell']});
+require('load-grunt-subtasks')(grunt, {
+  pattern: ['grunt-contrib-*', 'grunt-shell']
+});
 ```
 
 ### Load all grunt-contrib tasks excluding one
@@ -81,58 +63,52 @@ require('load-grunt-tasks')(grunt, {pattern: ['grunt-contrib-*', 'grunt-shell']}
 You can exclude tasks using the negate `!` globbing pattern:
 
 ```js
-require('load-grunt-tasks')(grunt, {pattern: ['grunt-contrib-*', '!grunt-contrib-coffee']});
+require('load-grunt-subtasks')(grunt, {
+  pattern: ['grunt-contrib-*', '!grunt-contrib-coffee']
+});
 ```
 
-### Set custom path to package.json
+### Set a specific base to search for grunt tasks
 
 ```js
-require('load-grunt-tasks')(grunt, {config: '../package'});
+require('load-grunt-subtasks')(grunt, {
+  base: './node_modules/shared/'
+});
 ```
 
-### Only load from `devDependencies`
+### Set multiple bases to search for grunt tasks
 
 ```js
-require('load-grunt-tasks')(grunt, {scope: 'devDependencies'});
-```
-
-### Only load from `devDependencies` and `dependencies`
-
-```js
-require('load-grunt-tasks')(grunt, {scope: ['devDependencies', 'dependencies']});
+require('load-grunt-subtasks')(grunt, {
+  base: ['./node_modules/shared/', './node_modules/devDep']
+});
 ```
 
 ### All options in use
 
 ```js
-require('load-grunt-tasks')(grunt, {
-	pattern: 'grunt-contrib-*',
-	config: '../package.json',
-	scope: 'devDependencies'
+require('load-grunt-subtasks')(grunt, {
+  pattern: ['grunt-contrib-*', 'lumbar'],
+  base: './node_modules/shared/'
 });
 ```
-
 
 ## Options
 
 ### pattern
 
-Type: `String|Array`  
+Type: `String|Array`
 Default: `'grunt-*'`
 
 By default `grunt-*` will be used as the [globbing pattern](https://github.com/isaacs/minimatch).
 
-### config
+### base
 
-Type: `String|Object`  
-Default: Path to nearest package.json
+Type: `String|Array`
+Default: `'./node_modules/*/node_modules'`
 
-### scope
-
-Type: `String|Array`  
-Default: `['dependencies', 'devDependencies', 'peerDependencies']`
-
+Note that `base` will be searched for literally, and not globbed
 
 ## License
 
-MIT © [Sindre Sorhus](http://sindresorhus.com)
+MIT © [Patrick Kettner](https://github.com/patrickkettner)

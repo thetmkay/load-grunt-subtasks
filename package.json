@@ -1,7 +1,7 @@
 {
-  "name": "load-grunt-tasks",
-  "version": "0.2.0",
-  "description": "Load multiple grunt tasks using globbing patterns",
+  "name": "load-grunt-subtasks",
+  "version": "0.1.0",
+  "description": "Load multiple grunt tasks from subprojects using globbing patterns",
   "keywords": [
     "grunt",
     "load",
@@ -13,33 +13,23 @@
     "matchdep",
     "dependencies"
   ],
-  "homepage": "https://github.com/sindresorhus/load-grunt-tasks",
-  "bugs": "https://github.com/sindresorhus/load-grunt-tasks/issues",
+  "homepage": "https://github.com/patrickkettner/load-grunt-subtasks",
+  "bugs": "https://github.com/patrickkettner/load-grunt-subtasks/issues",
   "license": "MIT",
   "author": {
-    "name": "Sindre Sorhus",
-    "email": "sindresorhus@gmail.com",
-    "url": "http://sindresorhus.com"
+    "name": "Patrick Kettner",
+    "email": "patrickkettner@gmail.com"
   },
   "files": [
-    "load-grunt-tasks.js"
+    "load-grunt-subtasks.js"
   ],
-  "main": "load-grunt-tasks",
+  "main": "load-grunt-subtasks",
   "repository": {
     "type": "git",
-    "url": "git://github.com/sindresorhus/load-grunt-tasks.git"
-  },
-  "scripts": {
-    "test": "grunt"
+    "url": "git://github.com/sindresorhus/load-grunt-subtasks.git"
   },
   "dependencies": {
-    "globule": "~0.1.0",
-    "findup-sync": "~0.1.2"
-  },
-  "devDependencies": {
-    "grunt": "~0.4.1",
-    "grunt-cli": "~0.1.9",
-    "grunt-svgmin": "~0.2.0"
+    "globule": "~0.1.0"
   },
   "engines": {
     "node": ">=0.8.0"
