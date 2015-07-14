@@ -15,7 +15,7 @@ module.exports = function (grunt, options) {
   patterns.push('grunt-*');
 
   patterns = patterns.map(function(pattern) {
-    return pattern + '/tasks/**';
+    return pattern + '/tasks/*.js';
   });
 
   patterns.push('!grunt', '!grunt-cli');
